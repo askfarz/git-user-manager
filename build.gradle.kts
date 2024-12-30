@@ -7,7 +7,7 @@ plugins {
 group = "askfar.ru"
 version = "1.0.0-SNAPSHOT"
 
-val gsonVersion = "4.5.1"
+val gsonVersion = "2.11.0"
 
 dependencies {
     implementation("com.google.code.gson:gson:${gsonVersion}")

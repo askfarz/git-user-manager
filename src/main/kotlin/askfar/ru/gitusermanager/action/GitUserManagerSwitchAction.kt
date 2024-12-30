@@ -7,7 +7,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.Messages
 import javax.swing.JOptionPane
 
-class GitUserManagerChangeAction : AnAction() {
+class GitUserManagerSwitchAction : AnAction() {
 
     private val configManager: ConfigManager = ConfigManager()
 
