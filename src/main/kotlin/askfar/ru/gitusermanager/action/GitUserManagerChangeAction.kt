@@ -1,0 +1,37 @@
+package askfar.ru.gitusermanager.action
+
+import askfar.ru.gitusermanager.config.ConfigManager
+import askfar.ru.gitusermanager.model.GitScripts
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.ui.Messages
+import javax.swing.JOptionPane
+
+class GitUserManagerChangeAction : AnAction() {
+
+    private val configManager: ConfigManager = ConfigManager()
+
+    override fun actionPerformed(e: AnActionEvent) {
+        val users = configManager.getUsers()
+        val userNames = users.map { "${it.name} <${it.email}>" }.toTypedArray()
+
+        val selectedUser = JOptionPane.showInputDialog(
+            null,
+            "Select Git User:",
+            "Switch User",
+            JOptionPane.QUESTION_MESSAGE,
+            Messages.getQuestionIcon(),
+            userNames,
+            userNames.firstOrNull()
+        )
+
+        selectedUser?.let {
+            val selected = users.firstOrNull { user -> "${user.name} <${user.email}>" == it }
+            selected?.let { user ->
+                Runtime.getRuntime().exec(String.format(GitScripts.CHANGE_USER_NAME.script, user.name)).waitFor()
+                Runtime.getRuntime().exec(String.format(GitScripts.CHANGE_USER_EMAIL.script, user.email)).waitFor()
+                Messages.showMessageDialog("Switched to user: ${user.name} <${user.email}>", "Success", Messages.getInformationIcon())
+            }
+        }
+    }
+}
