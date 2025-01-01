@@ -8,9 +8,13 @@ group = "askfar.com"
 version = "1.0.0-SNAPSHOT"
 
 val gsonVersion = "2.11.0"
+val loggingJvmVersion = "3.0.5"
+val logbackVersion="1.5.15"
 
 dependencies {
     implementation("com.google.code.gson:gson:${gsonVersion}")
+    implementation("io.github.microutils:kotlin-logging-jvm:${loggingJvmVersion}")
+    implementation("ch.qos.logback:logback-classic:${logbackVersion}")
 }
 
 repositories {

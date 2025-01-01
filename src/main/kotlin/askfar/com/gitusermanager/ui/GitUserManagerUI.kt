@@ -1,17 +1,21 @@
 package askfar.com.gitusermanager.ui
 
-import askfar.com.gitusermanager.config.ConfigManager
+import askfar.com.gitusermanager.exception.ValidationException
+import askfar.com.gitusermanager.manager.ConfigManager
+import askfar.com.gitusermanager.manager.impl.ConfigManagerImpl
 import askfar.com.gitusermanager.model.GitUser
 import askfar.com.gitusermanager.utils.ValidateUtils
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.Messages
 import com.intellij.ui.dsl.builder.AlignX
 import com.intellij.ui.dsl.builder.panel
+import mu.KotlinLogging
 import javax.swing.JTextField
 
 class GitUserManagerUI {
 
-    private val configManager: ConfigManager = ConfigManager()
+    private val logger = KotlinLogging.logger {}
+    private val configManager: ConfigManager = ConfigManagerImpl()
     private lateinit var nameField: JTextField
     private lateinit var emailField: JTextField
 
@@ -37,17 +41,13 @@ class GitUserManagerUI {
         try {
             ValidateUtils.validate(name, email)
             configManager.saveUsers(GitUser(name, email))
-            Messages.showMessageDialog(
-                "Added user: Name = $name, Email = $email",
-                "Success",
-                Messages.getInformationIcon()
-            )
+            Messages.showMessageDialog("Added user: Name = $name, Email = $email", "Success", Messages.getInformationIcon())
+        } catch (e: ValidationException) {
+            logger.error("Validation exception in GitUserManagerAction", e)
+            Messages.showMessageDialog(e.message, "Warn", Messages.getWarningIcon())
         } catch (e: Exception) {
-            Messages.showMessageDialog(
-                e.message,
-                "Error",
-                Messages.getErrorIcon()
-            )
+            logger.error("Unexpected exception in GitUserManagerAction", e)
+            Messages.showMessageDialog(e.message, "Error", Messages.getErrorIcon())
         }
     }
 }
