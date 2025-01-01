@@ -18,15 +18,18 @@ class ConfigManager {
             val currentUserName = Runtime.getRuntime().exec(GitScripts.CURRENT_USER_NAME.script).inputReader().readLine()
             val currentUserEmail = Runtime.getRuntime().exec(GitScripts.CURRENT_USER_EMAIL.script).inputReader().readLine()
             val currentGitUser = GitUser(currentUserName, currentUserEmail)
-            configFile.writeText(gson.toJson(listOf(currentGitUser)))
+
+            configFile.writeText(gson.toJson(setOf(currentGitUser)))
         }
     }
 
-    fun getUsers(): List<GitUser> {
-        return gson.fromJson(configFile.readText(), Array<GitUser>::class.java)?.toList() ?: emptyList()
+    fun getUsers(): Set<GitUser> {
+        return gson.fromJson(configFile.readText(), Array<GitUser>::class.java)?.toHashSet() ?: emptySet()
     }
 
-    fun saveUsers(users: List<GitUser>) {
+    fun saveUsers(users: Set<GitUser>) {
+        val existUsers = getUsers()
+        users.plus(existUsers)
         configFile.writeText(gson.toJson(users))
     }
 }
