@@ -6,7 +6,7 @@
 
     <description>
         <![CDATA[
-            Plugin for manage git users in Intellij IDEA<br>
+            Intellij IDEA plugin for managing global git users.<br>
         ]]>
     </description>
 
