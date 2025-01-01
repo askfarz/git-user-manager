@@ -27,9 +27,8 @@ class ConfigManager {
         return gson.fromJson(configFile.readText(), Array<GitUser>::class.java)?.toHashSet() ?: emptySet()
     }
 
-    fun saveUsers(users: Set<GitUser>) {
-        val existUsers = getUsers()
-        users.plus(existUsers)
-        configFile.writeText(gson.toJson(users))
+    fun saveUsers(newUsers: GitUser) {
+        val allUsers = getUsers().plus(newUsers)
+        configFile.writeText(gson.toJson(allUsers))
     }
 }
