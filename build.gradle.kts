@@ -4,8 +4,18 @@ plugins {
     id("org.jetbrains.intellij") version "1.17.3"
 }
 
-group = "askfar.ru"
+group = "askfar.com"
 version = "1.0.0-SNAPSHOT"
+
+val gsonVersion = "2.11.0"
+val loggingJvmVersion = "3.0.5"
+val logbackVersion="1.5.15"
+
+dependencies {
+    implementation("com.google.code.gson:gson:${gsonVersion}")
+    implementation("io.github.microutils:kotlin-logging-jvm:${loggingJvmVersion}")
+    implementation("ch.qos.logback:logback-classic:${logbackVersion}")
+}
 
 repositories {
     mavenCentral()
@@ -17,17 +27,16 @@ intellij {
     version.set("2023.2.6")
     type.set("IC") // Target IDE Platform
 
-    plugins.set(listOf(/* Plugin Dependencies */))
+    plugins.set(listOf("java"))
 }
 
 tasks {
-    // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "21"
-        targetCompatibility = "21"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "21"
+        kotlinOptions.jvmTarget = "17"
     }
 
     patchPluginXml {
