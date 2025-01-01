@@ -11,20 +11,21 @@
     </description>
 
     <depends>com.intellij.modules.platform</depends>
-    <extensions defaultExtensionNs="com.intellij">
+    <extensions
+            defaultExtensionNs="com.intellij">
     </extensions>
 
     <actions>
-        <action id="askfar.com.gitusermanager.action.GitUserManagerSwitchAction"
+        <action id="GitUserManagerSwitchAction"
                 class="askfar.com.gitusermanager.action.GitUserManagerSwitchAction" text="Switch Git User"
                 description="Action for switch git user in Intellij IDEA">
+            <add-to-group group-id="VcsGroups" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH" second-keystroke="ctrl Z"/>
         </action>
-
-        <action id="askfar.com.gitusermanager.action.GitUserManagerAction"
-                class="askfar.com.gitusermanager.action.GitUserManagerAction" text="Git Users Manager"
+        <action id="GitUserManagerAction"
+                class="askfar.com.gitusermanager.action.GitUserManagerAction" text="Manage Git Users"
                 description="Action for manage git users in Intellij IDEA">
-            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="VcsGroups" anchor="last"/>
         </action>
     </actions>
 </idea-plugin>
