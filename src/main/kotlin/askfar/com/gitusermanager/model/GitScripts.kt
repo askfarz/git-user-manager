@@ -1,4 +1,4 @@
-package askfar.ru.gitusermanager.model
+package askfar.com.gitusermanager.model
 
 enum class GitScripts(val script: String) {
 

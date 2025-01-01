@@ -1,7 +1,7 @@
-package askfar.ru.gitusermanager.action
+package askfar.com.gitusermanager.action
 
-import askfar.ru.gitusermanager.config.ConfigManager
-import askfar.ru.gitusermanager.model.GitScripts
+import askfar.com.gitusermanager.config.ConfigManager
+import askfar.com.gitusermanager.model.GitScripts
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.Messages

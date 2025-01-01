@@ -1,7 +1,7 @@
-package askfar.ru.gitusermanager.config
+package askfar.com.gitusermanager.config
 
-import askfar.ru.gitusermanager.model.GitScripts
-import askfar.ru.gitusermanager.model.GitUser
+import askfar.com.gitusermanager.model.GitScripts
+import askfar.com.gitusermanager.model.GitUser
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.intellij.openapi.components.Service
