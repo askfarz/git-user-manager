@@ -1,10 +1,17 @@
 package askfar.com.gitusermanager.manager
 
 import askfar.com.gitusermanager.model.GitUser
+import askfar.com.gitusermanager.model.GitUsersManager
 
 interface ConfigManager {
 
-    fun getUsers(): Set<GitUser>
+    fun getUsersManager(): GitUsersManager
 
-    fun saveUsers(newUsers: GitUser)
+    fun saveUser(newUser: GitUser)
+
+    fun deleteUser(user: GitUser)
+
+    fun updateCurrentUser(user: GitUser)
+
+    fun getCurrentUser(): GitUser
 }
