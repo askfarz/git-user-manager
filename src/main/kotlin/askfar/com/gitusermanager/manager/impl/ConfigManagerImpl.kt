@@ -17,7 +17,7 @@ class ConfigManagerImpl : ConfigManager {
     private val configFileName = ".git_users.json"
     private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
     private val configFile = File(System.getProperty("user.home"), configFileName)
-    private lateinit var currentUser: GitUser
+    private var currentUser: GitUser
 
     init {
         if (!configFile.exists()) {
@@ -30,6 +30,7 @@ class ConfigManagerImpl : ConfigManager {
             writeConfig(gitUsersManager)
             logger.info { "The configuration file \"${configFileName}\" is initialized by the current user." }
         } else {
+            currentUser = getUsersManager().currentUser
             logger.debug { "Configuration file \"${configFileName}\" exist" }
         }
     }
@@ -53,6 +54,7 @@ class ConfigManagerImpl : ConfigManager {
     override fun updateCurrentUser(user: GitUser) {
         val gitUsersManager = getUsersManager()
         gitUsersManager.currentUser = user
+        currentUser = user
         writeConfig(gitUsersManager)
     }
 
@@ -62,5 +64,11 @@ class ConfigManagerImpl : ConfigManager {
 
     private fun writeConfig(gitUsersManager: GitUsersManager) {
         configFile.writeText(gson.toJson(gitUsersManager))
+    }
+
+    companion object ConfigManagerFactory {
+        private val configManager: ConfigManager = ConfigManagerImpl()
+
+        fun create(): ConfigManager = configManager
     }
 }

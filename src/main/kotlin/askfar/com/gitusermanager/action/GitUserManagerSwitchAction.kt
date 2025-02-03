@@ -12,9 +12,13 @@ import javax.swing.JOptionPane
 class GitUserManagerSwitchAction : AnAction() {
 
     private val logger = KotlinLogging.logger {}
-    private val configManager: ConfigManager = ConfigManagerImpl()
+    private val configManager: ConfigManager = ConfigManagerImpl.create()
 
     override fun actionPerformed(e: AnActionEvent) {
+        actionPerformed()
+    }
+
+    fun actionPerformed() {
         logger.trace { "Handling the GitUserManagerSwitchAction" }
         val gitUsersManager = configManager.getUsersManager()
         val userNames = gitUsersManager.users.map { "${it.name} <${it.email}>" }.toTypedArray()
@@ -37,7 +41,7 @@ class GitUserManagerSwitchAction : AnAction() {
                     Runtime.getRuntime().exec(String.format(GitScripts.CHANGE_USER_EMAIL.script, user.email)).waitFor()
                     configManager.updateCurrentUser(user)
                 }
-                Messages.showMessageDialog("Switched to user:\n ${user.name} <${user.email}>", "Success", Messages.getInformationIcon())
+                Messages.showMessageDialog("Switched to user:\n ${user.name} (${user.email})", "Success", Messages.getInformationIcon())
             }
         }
     }

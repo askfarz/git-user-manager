@@ -17,9 +17,9 @@ import javax.swing.JTextField
 class GitUserManagerUI {
 
     private val logger = KotlinLogging.logger {}
-    private val configManager: ConfigManager = ConfigManagerImpl()
     private lateinit var nameField: JTextField
     private lateinit var emailField: JTextField
+    private val configManager: ConfigManager = ConfigManagerImpl.create()
 
     fun createPanel(): DialogPanel {
         return panel {
@@ -33,7 +33,7 @@ class GitUserManagerUI {
                 row {
                     button("➕") {
                         addUserProcess(nameField.text, emailField.text)
-                    }.align(AlignX.LEFT)
+                    }.align(AlignX.CENTER)
 
                     button("➖") {
                         deleteUserProcess()
@@ -75,10 +75,10 @@ class GitUserManagerUI {
             val selected = gitUsersManager.users.firstOrNull { user -> "${user.name} <${user.email}>" == it }
             selected?.let { user ->
                 if (gitUsersManager.currentUser.email == user.email) {
-                    showMessageDialog("This user is current and cannot be deleted:\n ${user.name} <${user.email}>", "Failure", Messages.getErrorIcon())
+                    showMessageDialog("This user is current and cannot be deleted:\n ${user.name} (${user.email})", "Failure", Messages.getErrorIcon())
                 } else {
                     configManager.deleteUser(user)
-                    showMessageDialog("Deleted user:\n ${user.name} <${user.email}>", "Success", Messages.getInformationIcon())
+                    showMessageDialog("Deleted user:\n ${user.name} (${user.email})", "Success", Messages.getInformationIcon())
                 }
             }
         }
