@@ -12,12 +12,16 @@ import javax.swing.JOptionPane
 class GitUserManagerSwitchAction : AnAction() {
 
     private val logger = KotlinLogging.logger {}
-    private val configManager: ConfigManager = ConfigManagerImpl()
+    private val configManager: ConfigManager = ConfigManagerImpl.create()
 
     override fun actionPerformed(e: AnActionEvent) {
+        actionPerformed()
+    }
+
+    fun actionPerformed() {
         logger.trace { "Handling the GitUserManagerSwitchAction" }
-        val users = configManager.getUsers()
-        val userNames = users.map { "${it.name} <${it.email}>" }.toTypedArray()
+        val gitUsersManager = configManager.getUsersManager()
+        val userNames = gitUsersManager.users.map { "${it.name} <${it.email}>" }.toTypedArray()
 
         val selectedUser = JOptionPane.showInputDialog(
             null,
@@ -26,15 +30,18 @@ class GitUserManagerSwitchAction : AnAction() {
             JOptionPane.QUESTION_MESSAGE,
             Messages.getQuestionIcon(),
             userNames,
-            userNames.firstOrNull()
+            gitUsersManager.currentUser
         )
 
         selectedUser?.let {
-            val selected = users.firstOrNull { user -> "${user.name} <${user.email}>" == it }
+            val selected = gitUsersManager.users.firstOrNull { user -> "${user.name} <${user.email}>" == it }
             selected?.let { user ->
-                Runtime.getRuntime().exec(String.format(GitScripts.CHANGE_USER_NAME.script, user.name)).waitFor()
-                Runtime.getRuntime().exec(String.format(GitScripts.CHANGE_USER_EMAIL.script, user.email)).waitFor()
-                Messages.showMessageDialog("Switched to user: ${user.name} <${user.email}>", "Success", Messages.getInformationIcon())
+                if (gitUsersManager.currentUser.email != user.email) {
+                    Runtime.getRuntime().exec(String.format(GitScripts.CHANGE_USER_NAME.script, user.name)).waitFor()
+                    Runtime.getRuntime().exec(String.format(GitScripts.CHANGE_USER_EMAIL.script, user.email)).waitFor()
+                    configManager.updateCurrentUser(user)
+                }
+                Messages.showMessageDialog("Switched to user:\n ${user.name} (${user.email})", "Success", Messages.getInformationIcon())
             }
         }
     }

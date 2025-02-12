@@ -13,6 +13,8 @@
     <depends>com.intellij.modules.platform</depends>
     <extensions
             defaultExtensionNs="com.intellij">
+        <statusBarWidgetFactory id="GitUserManagerStatusBarWidgetFactory"
+                                implementation="askfar.com.gitusermanager.widget.GitUserManagerStatusBarWidgetFactory"/>
     </extensions>
 
     <actions>
